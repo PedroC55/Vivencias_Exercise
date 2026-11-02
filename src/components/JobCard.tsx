@@ -8,7 +8,7 @@ type Props = {
 
 export default function JobCard({ job, onAccept }: Props) {
   return (
-    <li className="card">
+    <li className={job.urgent ? "card card-urgent" : "card"}>
       <div className="card-info">
         <h2>
           {job.service}
@@ -22,7 +22,7 @@ export default function JobCard({ job, onAccept }: Props) {
         </p>
       </div>
       <div className="card-action">
-        <strong>{formatPrice(job.priceCents)}</strong>
+        <strong className="price">{formatPrice(job.priceCents)}</strong>
         <button
           onClick={() => onAccept(job.id)}
           aria-label={`Aceitar ${job.service} em ${job.city}`}

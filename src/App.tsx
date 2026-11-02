@@ -49,11 +49,24 @@ export default function App() {
   }
 
   function renderContent() {
-    if (loading) return <p role="status">A carregar pedidos…</p>;
-    if (error) return <p role="alert">Não foi possível carregar os pedidos.</p>;
+    if (loading) {
+      return (
+        <p role="status" className="message">
+          <span className="spinner" aria-hidden="true" />
+          A carregar pedidos…
+        </p>
+      );
+    }
+    if (error) {
+      return (
+        <p role="alert" className="message">
+          Não foi possível carregar os pedidos.
+        </p>
+      );
+    }
     if (visibleJobs.length === 0) {
       return (
-        <p role="status">
+        <p role="status" className="message">
           {city === ALL_CITIES
             ? "Não há pedidos disponíveis neste momento."
             : `Não há pedidos disponíveis em ${city}.`}
@@ -70,26 +83,47 @@ export default function App() {
   }
 
   return (
-    <main>
-      <h1>Pedidos disponíveis</h1>
+    <>
+      <header className="site-header">
+        <div className="container">
+          <p className="brand">Vivência's</p>
+          <p className="brand-sub">Serviços de Geriatria · Gondomar</p>
+        </div>
+      </header>
 
-      <label className="filter">
-        Cidade{" "}
-        <select
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-          disabled={loading}
-        >
-          <option value={ALL_CITIES}>Todas</option>
-          {cities.map((c) => (
-            <option key={c} value={c}>
-              {c}
-            </option>
-          ))}
-        </select>
-      </label>
+      <main className="container">
+        <h1>Pedidos de reparação disponíveis</h1>
+        <p className="intro">
+          Escolha os pedidos que pode realizar e aceite-os para os reservar.
+        </p>
 
-      {renderContent()}
-    </main>
+        <div className="toolbar">
+          <label className="filter">
+            Cidade
+            <select
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              disabled={loading}
+            >
+              <option value={ALL_CITIES}>Todas</option>
+              {cities.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
+          </label>
+          {!loading && !error && (
+            <span className="count">
+              {visibleJobs.length === 1
+                ? "1 pedido"
+                : `${visibleJobs.length} pedidos`}
+            </span>
+          )}
+        </div>
+
+        {renderContent()}
+      </main>
+    </>
   );
 }
